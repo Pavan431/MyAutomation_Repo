@@ -4,19 +4,16 @@ from distutils.command.config import config
 import requests
 import configparser
 
-def call_get_call(url):
-    url="https://jsonplaceholder.typicode.com/users"
+def send_get_request(url):
     print(f"Calling API..\n"
           f"Method:GET\n"
     f"URL:{url}")
-
     response= requests.get(url)
-
-
     assert response.status_code == 200,"API failed"
-    print("API Executed successfully and status code is 200")
-    tot_time= response.elapsed.total_seconds()
-    print(f"Total_response_time= {tot_time:.3f}")
+    print(f"status code : f{response.status_code}")
+    print("API Executed successfully")
+    response_time= response.elapsed.total_seconds()
+    print(f"Total_response_time= {response_time:.3f}")
     print("\n" + "* " * 30)
     for key,value in response.headers.items():
         print(f"{key}: {value}")
@@ -26,6 +23,7 @@ def call_get_call(url):
         print(user)
 
     print("Application completed")
+    return response.json()
 
 config= configparser.ConfigParser()
 config.read("config.ini")
@@ -35,9 +33,9 @@ posts_url=base_url+"/posts"
 comments_url=base_url+"/comments"
 albums_url=base_url+"/albums"
 
-call_get_call(users_url)
-call_get_call(posts_url)
-call_get_call(comments_url)
-call_get_call(albums_url)
+send_get_request(users_url)
+send_get_request(posts_url)
+send_get_request(comments_url)
+send_get_request(albums_url)
 
 
